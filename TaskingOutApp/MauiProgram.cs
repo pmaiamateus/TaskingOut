@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using TaskingOutApp.Data;
 using MudBlazor.Services;
 
 namespace TaskingOutApp;
@@ -23,8 +22,6 @@ public static class MauiProgram
         builder.Services.AddBlazorWebViewDeveloperTools();
 		builder.Logging.AddDebug();
 #endif
-
-        builder.Services.AddSingleton<WeatherForecastService>();
 
         return builder.Build();
     }
