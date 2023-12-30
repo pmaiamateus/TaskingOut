@@ -1,0 +1,46 @@
+﻿@page "/checklist"
+
+<MudContainer Class="pa-0 ma-0">
+    @if (Checklists.Count == 0)
+    {
+        <MudContainer Style="top: 50%; left: 50%; transform: translate(-50%, -50%); position: fixed;">
+            <MudStack AlignItems="AlignItems.Center">
+                <MudText Typo="Typo.h5">You don't have any checlist created yet...</MudText>
+                <MudButton Style="width: fit-content" Variant="Variant.Filled" Color="Color.Primary" Href="/checklist/create">Create Checklist</MudButton>
+            </MudStack>
+        </MudContainer>
+    }
+    else
+    {
+        @foreach (var checklist in Checklists)
+        {
+            <MudCard>
+                <MudCardHeader>
+                    <MudText>
+                        @checklist.Title
+                    </MudText>
+                    <MudSpacer />
+                    <MudText>
+                        @checklist.Checks / @checklist.Total
+                    </MudText>
+                </MudCardHeader>
+                @if (checklist.Description != null && checklist.Description.Length != 0)
+                {
+                    <MudCardContent>
+                        <MudText>
+                            @checklist.Description
+                        </MudText>
+                    </MudCardContent>
+                }
+                <MudCardActions Class="pa-0 ma-0">
+                    <MudProgressLinear Color="Color.Dark" Size="Size.Small" Value=@checklist.Progress />
+                </MudCardActions>
+            </MudCard>
+        }
+        <MudFab Style="bottom: 15px; right: 15px; position: fixed;" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" />
+    }
+</MudContainer>
+
+@code {
+    List<Checklist> Checklists = new();
+}
