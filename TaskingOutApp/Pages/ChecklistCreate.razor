@@ -46,7 +46,7 @@
                                Variant="Variant.Filled"
                                Icon="@Icons.Material.Filled.Edit"
                                Color="Color.Primary"
-                               OnClick="OpenEditDialog" />
+                               OnClick="() => { newCheckTask = context; OpenEditDialog();}" />
             </MudTd>
         </RowTemplate>
     </MudTable>
@@ -131,7 +131,6 @@
     MudForm form;
     Checklist checkList = new();
     CheckTask newCheckTask = new();
-    private CheckTask taskBeforeEdit;
     private DialogOptions dialogOptions = new() { FullWidth = true };
 
     private void OpenCreateDialog() => createVisible = true;
