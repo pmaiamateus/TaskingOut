@@ -1,0 +1,177 @@
+﻿@page "/checklist/create"
+
+@inject Blazored.LocalStorage.ILocalStorageService LS
+@inject NavigationManager NavManager
+
+<MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
+    <MudButton Variant="Variant.Filled"
+               Color="Color.Success"
+               OnClick="SaveChecklist">
+        Save checklist
+    </MudButton>
+    <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors" Class="mb-5" Style="width: 100%">
+        <MudTextField T="string" Label="Title" Required="true" RequiredError="Title is required!" MaxLength="25" />
+        <MudTextField T="string" Label="Description" MaxLength="150" />
+    </MudForm>
+    <MudTable Items=@checkList.Checks
+              Hover=true
+              Style="width: 100%"
+              CanCancelEdit=true
+              IsEditRowSwitchingBlocked=true
+              Dense=true
+              EditButtonPosition="TableEditButtonPosition.End"
+              Outlined=true>
+        <ToolBarContent>
+            <MudText>Task list</MudText>
+            <MudSpacer />
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       OnClick="OpenCreateDialog">
+                Add task
+            </MudButton>
+        </ToolBarContent>
+        <RowTemplate>
+            <MudTd DataLabel="Description" Style="width: 100%">
+                @context.Description
+            </MudTd>
+            <MudTd>
+                <MudIconButton Size=Size.Medium
+                               Variant="Variant.Filled"
+                               Icon="@Icons.Material.Filled.Delete"
+                               Color="Color.Error"
+                               OnClick="() => { checkList.Checks = checkList.Checks.Where(c => c != context).ToList(); checkList.RearrangeCheckIndexes(); }" />
+            </MudTd>
+            <MudTd>
+                <MudIconButton Size=Size.Medium
+                               Variant="Variant.Filled"
+                               Icon="@Icons.Material.Filled.Edit"
+                               Color="Color.Primary"
+                               OnClick="OpenEditDialog" />
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+</MudContainer>
+
+<MudDialog @bind-IsVisible="createVisible" Options="dialogOptions" OnBackdropClick="CloseCreateDialog">
+    <TitleContent>
+        <MudText>Creating task</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudTextField T="string"
+                      @bind-Value="newCheckTask.Description"
+                      MaxLength=200
+                      AutoGrow=true
+                      Label="Task description"
+                      Immediate=true />
+    </DialogContent>
+    <DialogActions>
+        <MudButton Class="mx-2"
+                   Variant="Variant.Filled"
+                   Color="Color.Error"
+                   StartIcon="@Icons.Material.Filled.DeleteForever"
+                   OnClick="CloseCreateDialog">
+            Cancel
+        </MudButton>
+        <MudButton Class="mx-2"
+                   Variant="Variant.Filled"
+                   Color="Color.Success"
+                   ButtonType=ButtonType.Submit
+                   StartIcon="@Icons.Material.Filled.Add"
+                   Disabled=string.IsNullOrEmpty(newCheckTask.Description)
+                   OnClick="SubmitCreateDialog">
+            Add
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+<MudDialog @bind-IsVisible="editVisible" Options="dialogOptions" OnBackdropClick="CloseEditDialog">
+    <TitleContent>
+        <MudText>Edit Task</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudTextField T="string"
+                      @bind-Value="newCheckTask.Description"
+                      MaxLength=200
+                      AutoGrow=true
+                      Label="Task description"
+                      Immediate=true />
+    </DialogContent>
+    <DialogActions>
+        <MudButton Class="mx-2"
+                   Variant="Variant.Filled"
+                   Color="Color.Error"
+                   StartIcon="@Icons.Material.Filled.DeleteForever"
+                   OnClick="CloseEditDialog">
+            Cancel
+        </MudButton>
+        <MudButton Class="mx-2"
+                   Variant="Variant.Filled"
+                   Color="Color.Success"
+                   ButtonType=ButtonType.Submit
+                   StartIcon="@Icons.Material.Filled.Check"
+                   Disabled=string.IsNullOrEmpty(newCheckTask.Description)
+                   OnClick="SubmitEditDialog">
+            Add
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+<style>
+    .mud-table-container {
+        border-top: 1px solid var(--mud-palette-table-lines);
+    }
+</style>
+
+@code {
+    MudMessageBox mbox { get; set; }
+    bool success;
+    private bool createVisible;
+    private bool editVisible;
+    string[] errors = { };
+    MudForm form;
+    Checklist checkList = new();
+    CheckTask newCheckTask = new();
+    private CheckTask taskBeforeEdit;
+    private DialogOptions dialogOptions = new() { FullWidth = true };
+
+    private void OpenCreateDialog() => createVisible = true;
+
+    void CloseCreateDialog()
+    {
+        createVisible = false;
+        newCheckTask = new();
+    }
+
+    void SubmitCreateDialog()
+    {
+        createVisible = false;
+        newCheckTask.Index = checkList.Checks.Count;
+        checkList.Checks.Add(newCheckTask);
+        newCheckTask = new();
+        StateHasChanged();
+    }
+
+    private void OpenEditDialog() => editVisible = true;
+
+    void CloseEditDialog()
+    {
+        editVisible = false;
+        newCheckTask = new();
+    }
+
+    void SubmitEditDialog()
+    {
+        editVisible = false;
+        checkList.Checks.Find(t => t.Index == newCheckTask.Index).Description = newCheckTask.Description;
+        newCheckTask = new();
+        StateHasChanged();
+    }
+
+    async Task SaveChecklist()
+    {
+        List<Checklist> checklists = await LS.GetItemAsync<List<Checklist>>("CheckLists") ?? new();
+        checklists.Add(checkList);
+        await LS.SetItemAsync("CheckLists", checklists);
+        NavManager.NavigateTo("/checklist");
+    }
+}

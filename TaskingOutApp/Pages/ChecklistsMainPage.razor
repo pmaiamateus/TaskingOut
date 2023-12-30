@@ -1,7 +1,9 @@
 ﻿@page "/checklist"
 
-<MudContainer Class="pa-0 ma-0">
-    @if (Checklists.Count == 0)
+@inject Blazored.LocalStorage.ILocalStorageService LS
+
+<MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
+    @if (checklists.Count == 0)
     {
         <MudContainer Style="top: 50%; left: 50%; transform: translate(-50%, -50%); position: fixed;">
             <MudStack AlignItems="AlignItems.Center">
@@ -12,9 +14,9 @@
     }
     else
     {
-        @foreach (var checklist in Checklists)
+        @foreach (var checklist in checklists)
         {
-            <MudCard>
+            <MudCard Class="mb-2">
                 <MudCardHeader>
                     <MudText>
                         @checklist.Title
@@ -37,10 +39,15 @@
                 </MudCardActions>
             </MudCard>
         }
-        <MudFab Style="bottom: 15px; right: 15px; position: fixed;" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" />
+        <MudFab Style="bottom: 15px; right: 15px; position: fixed;" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Href="/checklist/create" />
     }
 </MudContainer>
 
 @code {
-    List<Checklist> Checklists = new();
+    List<Checklist> checklists = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        checklists = await LS.GetItemAsync<List<Checklist>>("CheckLists") ?? new();
+    }
 }
