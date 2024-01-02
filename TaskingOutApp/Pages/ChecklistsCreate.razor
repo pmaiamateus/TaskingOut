@@ -1,4 +1,4 @@
-﻿@page "/checklist/create"
+﻿@page "/checklists/create"
 
 @inject Blazored.LocalStorage.ILocalStorageService LS
 @inject NavigationManager NavManager
@@ -10,8 +10,8 @@
         Save checklist
     </MudButton>
     <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors" Class="mb-5" Style="width: 100%">
-        <MudTextField T="string" Label="Title" Required="true" RequiredError="Title is required!" MaxLength="25" />
-        <MudTextField T="string" Label="Description" MaxLength="150" />
+        <MudTextField @bind-Value=checkList.Title T="string" Label="Title" Required="true" RequiredError="Title is required!" MaxLength="25" />
+        <MudTextField @bind-Value=checkList.Description T ="string" Label="Description" MaxLength="150" />
     </MudForm>
     <MudTable Items=@checkList.Checks
               Hover=true

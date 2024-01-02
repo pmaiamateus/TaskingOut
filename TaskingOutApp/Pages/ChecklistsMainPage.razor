@@ -1,4 +1,4 @@
-﻿@page "/checklist"
+﻿@page "/checklists"
 
 @inject Blazored.LocalStorage.ILocalStorageService LS
 
@@ -17,23 +17,25 @@
         @foreach (var checklist in checklists)
         {
             <MudCard Class="mb-2">
-                <MudCardHeader>
-                    <MudText>
-                        @checklist.Title
-                    </MudText>
-                    <MudSpacer />
-                    <MudText>
-                        @checklist.Checks / @checklist.Total
-                    </MudText>
-                </MudCardHeader>
-                @if (!string.IsNullOrEmpty(checklist.Description))
-                {
-                    <MudCardContent>
+                <MudButton FullWidth=true Href=@($"/checklists/{checklists.IndexOf(checklist)}")>
+                    <MudCardHeader>
                         <MudText>
-                            @checklist.Description
+                            @checklist.Title
                         </MudText>
-                    </MudCardContent>
-                }
+                        <MudSpacer />
+                        <MudText>
+                            @checklist.Checkeds / @checklist.Total
+                        </MudText>
+                    </MudCardHeader>
+                    @if (!string.IsNullOrEmpty(checklist.Description))
+                    {
+                        <MudCardContent>
+                            <MudText>
+                                @checklist.Description
+                            </MudText>
+                        </MudCardContent>
+                    }
+                </MudButton>
                 <MudCardActions Class="pa-0 ma-0">
                     <MudProgressLinear Color="Color.Dark" Size="Size.Small" Value=@checklist.Progress />
                 </MudCardActions>
