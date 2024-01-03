@@ -1,0 +1,14 @@
+﻿@page "/checklists/{index:int}"
+
+@inject Blazored.LocalStorage.ILocalStorageService LS
+
+<h3>@Index.userData.Checklists.ElementAt(index).Title</h3>
+
+@foreach (var check in Index.userData.Checklists.ElementAt(index).Checks)
+{
+    <MudCheckBox @bind-Value="@check.IsChecked" Label=@(check.Description)></MudCheckBox>
+}
+
+@code {
+    [Parameter] public int index { get; set; } = 0;
+}
