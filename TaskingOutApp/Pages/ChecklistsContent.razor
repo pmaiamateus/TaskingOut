@@ -2,12 +2,20 @@
 
 @inject Blazored.LocalStorage.ILocalStorageService LS
 
-<h3>@Index.userData.Checklists.ElementAt(index).Title</h3>
+<MudText Typo="Typo.h3">
+    @Index.userData.Checklists.ElementAt(index).Title
+</MudText>
+<MudText Typo="Typo.h5">
+    @Index.userData.Checklists.ElementAt(index).Description
+</MudText>
 
-@foreach (var check in Index.userData.Checklists.ElementAt(index).Checks)
-{
-    <MudCheckBox @bind-Value="@check.IsChecked" Label=@(check.Description)></MudCheckBox>
-}
+<MudPaper Class="pa-0 d-flex flex-wrap" Outlined="true" Elevation="5">
+    @foreach (var check in Index.userData.Checklists.ElementAt(index).Checks)
+    {
+        <MudCheckBox @bind-Value="@check.IsChecked" Dense=true Label=@(check.Description) Class="mx-0" Style="width: 100%" />
+        <MudDivider />
+    }
+</MudPaper>
 
 @code {
     [Parameter] public int index { get; set; } = 0;
