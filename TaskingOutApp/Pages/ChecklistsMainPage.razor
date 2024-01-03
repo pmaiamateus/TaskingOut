@@ -17,24 +17,23 @@
         @foreach (var checklist in checklists)
         {
             <MudCard Class="mb-2">
-                <MudButton FullWidth=true Href=@($"/checklists/{checklists.IndexOf(checklist)}")>
-                    <MudCardHeader>
-                        <MudText>
-                            @checklist.Title
-                        </MudText>
-                        <MudSpacer />
-                        <MudText>
-                            @checklist.Checkeds / @checklist.Total
-                        </MudText>
-                    </MudCardHeader>
-                    @if (!string.IsNullOrEmpty(checklist.Description))
-                    {
-                        <MudCardContent>
+                <MudButton FullWidth=true Href=@($"/checklists/{checklists.IndexOf(checklist)}") Class="justify-space-between">
+                    <MudCardContent Class="d-flex flex-column flex-grow-1">
+                        <MudStack Row=true Class="justify-space-between align-content-space-between">
+                            <MudText>
+                                @checklist.Title
+                            </MudText>
+                            <MudText>
+                                @checklist.Checkeds / @checklist.Total
+                            </MudText>
+                        </MudStack>
+                        @if (!string.IsNullOrEmpty(checklist.Description))
+                        {
                             <MudText>
                                 @checklist.Description
                             </MudText>
-                        </MudCardContent>
-                    }
+                        }
+                    </MudCardContent>
                 </MudButton>
                 <MudCardActions Class="pa-0 ma-0">
                     <MudProgressLinear Color="Color.Dark" Size="Size.Small" Value=@checklist.Progress />
