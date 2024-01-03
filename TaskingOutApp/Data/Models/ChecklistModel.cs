@@ -9,7 +9,7 @@ public class Checklist
     public List<CheckTask> Checks { get; set; } = new();
     public int Total { get => Checks.Count; }
     public int Checkeds { get => Checks.Count(c => c.IsChecked == true); }
-    public double Progress { get => (Checkeds/Total); }
+    public double Progress { get => (Checkeds*100/Total); }
     public void RearrangeCheckIndexes()
     {
         foreach (var check in Checks)

@@ -168,9 +168,8 @@
 
     async Task SaveChecklist()
     {
-        List<Checklist> checklists = await LS.GetItemAsync<List<Checklist>>("CheckLists") ?? new();
-        checklists.Add(checkList);
-        await LS.SetItemAsync("CheckLists", checklists);
-        NavManager.NavigateTo("/checklist");
+        Index.userData.Checklists.Add(checkList);
+        await LS.SetItemAsync("UserData", Index.userData);
+        NavManager.NavigateTo("/checklists");
     }
 }
