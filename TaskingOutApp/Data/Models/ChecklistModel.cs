@@ -18,4 +18,11 @@ public class Checklist
             check.Index = Checks.IndexOf(check);
         }
     }
+    public void ResetChecks()
+    {
+        foreach (var check in Checks)
+        {
+            check.IsChecked = false;
+        }
+    }
 }

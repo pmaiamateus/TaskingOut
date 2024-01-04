@@ -13,6 +13,7 @@
                 @Index.userData.Checklists.ElementAt(index).Title
             </MudText>
             <MudSpacer />
+            <MudButton StartIcon="@Icons.Material.Filled.Refresh" OnClick="Index.userData.Checklists.ElementAt(index).ResetChecks">Reset</MudButton>
             <MudText>
                 @Index.userData.Checklists.ElementAt(index).Checkeds/@Index.userData.Checklists.ElementAt(index).Total (@Index.userData.Checklists.ElementAt(index).Progress%)
             </MudText>
@@ -35,7 +36,7 @@
               Filter="new Func<CheckTask,bool>(FilterFunc)">
         <RowTemplate>
             <MudTd DataLabel="Description" Style="width: 100%">
-                <MudCheckBox @bind-Value=@(context.IsChecked) Dense=true Label=@(context.Description) Class="mx-0" />
+                <MudCheckBox @bind-Value=@(context.IsChecked) Dense=true Disabled=@(context.IsHidden) Label=@(context.Description) Class="mx-0" />
             </MudTd>
             <MudTd DataLabel="Description" Style="width: 100%">
                 <MudCheckBox @bind-Value=@(context.IsHidden) Dense=true CheckedIcon="@Icons.Material.Filled.VisibilityOff" UncheckedIcon="@Icons.Material.Filled.Visibility" StopClickPropagation=false></MudCheckBox>

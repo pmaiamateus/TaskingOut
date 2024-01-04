@@ -5,8 +5,17 @@
 @inject NavigationManager NavManager
 
 <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
-    <MudStack Row=true Spacing="0">
+    <MudStack Row=true Spacing="1">
         <MudButton StartIcon="@Icons.Material.Filled.ArrowBack" Href="/checklists" Variant="Variant.Outlined">Return</MudButton>
+        @if (index != null)
+        {
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Error"
+                       StartIcon="@Icons.Material.Filled.Delete"
+                       OnClick="DeleteChecklist">
+                Delete checklist
+            </MudButton>            
+        }
         <MudSpacer />
         <MudButton Variant="Variant.Filled"
                    Color="Color.Success"
@@ -184,7 +193,21 @@
 
     async Task SaveChecklist()
     {
-        Index.userData.Checklists.Add(checkList);
+        if (index != null)
+        {
+            Index.userData.Checklists.RemoveAt(index.Value);
+            Index.userData.Checklists.Insert(index.Value, checkList);
+        }
+        else
+            Index.userData.Checklists.Add(checkList);
+        await LS.SetItemAsync("UserData", Index.userData);
+        NavManager.NavigateTo("/checklists");
+    }
+
+    async Task DeleteChecklist()
+    {
+        if (index != null)
+            Index.userData.Checklists.RemoveAt(index.Value);
         await LS.SetItemAsync("UserData", Index.userData);
         NavManager.NavigateTo("/checklists");
     }
