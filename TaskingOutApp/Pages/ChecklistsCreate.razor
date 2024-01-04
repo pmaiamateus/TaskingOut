@@ -1,4 +1,5 @@
 ﻿@page "/checklists/create"
+@page "/checklists/edit/{index:int}"
 
 @inject Blazored.LocalStorage.ILocalStorageService LS
 @inject NavigationManager NavManager
@@ -130,6 +131,7 @@
 </style>
 
 @code {
+    [Parameter] public int? index { get; set; }
     MudMessageBox mbox { get; set; }
     bool success;
     private bool createVisible;
@@ -139,6 +141,13 @@
     Checklist checkList = new();
     CheckTask newCheckTask = new();
     private DialogOptions dialogOptions = new() { FullWidth = true };
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if (index != null)
+            checkList = Index.userData.Checklists.ElementAt(index.Value);
+    }
 
     private void OpenCreateDialog() => createVisible = true;
 
