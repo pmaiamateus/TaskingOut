@@ -1,0 +1,46 @@
+﻿@page "/checklists"
+
+<MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
+    @if (Index.userData.Checklists.Count == 0)
+    {
+        <MudContainer Style="top: 50%; left: 50%; transform: translate(-50%, -50%); position: fixed;">
+            <MudStack AlignItems="AlignItems.Center">
+                <MudText Typo="Typo.h5">You don't have any checlist created yet...</MudText>
+                <MudButton Style="width: fit-content" Variant="Variant.Filled" Color="Color.Primary" Href="/checklists/create">Create Checklist</MudButton>
+            </MudStack>
+        </MudContainer>
+    }
+    else
+    {
+        @foreach (var checklist in Index.userData.Checklists)
+        {
+            <MudCard Class="mb-2">
+                <MudButton FullWidth=true Href=@($"/checklists/{Index.userData.Checklists.IndexOf(checklist)}") Class="justify-space-between">
+                    <MudCardContent Class="d-flex flex-column flex-grow-1">
+                        <MudStack Row=true Class="justify-space-between align-content-space-between">
+                            <MudText>
+                                @checklist.Title
+                            </MudText>
+                            <MudText>
+                                @checklist.Checkeds / @checklist.Total
+                            </MudText>
+                        </MudStack>
+                        @if (!string.IsNullOrEmpty(checklist.Description))
+                        {
+                            <MudText>
+                                @checklist.Description
+                            </MudText>
+                        }
+                    </MudCardContent>
+                </MudButton>
+                <MudCardActions Class="pa-0 ma-0">
+                    <MudProgressLinear Color="Color.Dark" Size="Size.Small" Value=@checklist.Progress />
+                </MudCardActions>
+            </MudCard>
+        }
+        <MudFab Style="bottom: 15px; right: 15px; position: fixed;" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Href="/checklists/create" />
+    }
+</MudContainer>
+
+@code {
+}

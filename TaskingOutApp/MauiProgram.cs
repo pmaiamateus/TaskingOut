@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Blazored.LocalStorage;
+using Microsoft.Extensions.Logging;
 using MudBlazor.Services;
 
 namespace TaskingOutApp;
@@ -17,6 +18,7 @@ public static class MauiProgram
 
         builder.Services.AddMauiBlazorWebView();
         builder.Services.AddMudServices();
+        builder.Services.AddBlazoredLocalStorage();
 
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();

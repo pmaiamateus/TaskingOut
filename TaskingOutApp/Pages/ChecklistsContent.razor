@@ -1,0 +1,59 @@
+﻿@page "/checklists/{index:int}"
+
+@inject Blazored.LocalStorage.ILocalStorageService LS
+
+<MudButton StartIcon="@Icons.Material.Filled.ArrowBack" Href="/checklists" Variant="Variant.Outlined">Return</MudButton>
+
+<MudStack Spacing=0 Class="py-2">
+    <MudStack Row=true Spacing="0">
+        <MudText Typo="Typo.h4">
+            @Index.userData.Checklists.ElementAt(index).Title
+        </MudText>
+        <MudSpacer />
+        <MudText>
+            @Index.userData.Checklists.ElementAt(index).Checkeds/@Index.userData.Checklists.ElementAt(index).Total (@Index.userData.Checklists.ElementAt(index).Progress%)
+        </MudText>
+    </MudStack>
+    <MudStack Row=true Spacing="0">
+        <MudText Typo="Typo.h5">
+            @Index.userData.Checklists.ElementAt(index).Description
+        </MudText>
+        <MudSpacer />
+        <MudButton Variant="Variant.Filled" Color="Color.Tertiary" OnClick=@(() => showHidden = !showHidden)>
+            <MudText>
+                Show hidden tasks
+            </MudText>
+        </MudButton>
+    </MudStack>
+</MudStack>
+
+<MudTable Items=@(Index.userData.Checklists.ElementAt(index).Checks)
+          Hover=true
+          Style="width: 100%"
+          Filter="new Func<CheckTask,bool>(FilterFunc)">
+    <RowTemplate>
+        <MudTd DataLabel="Description" Style="width: 100%">
+            <MudCheckBox @bind-Value=@(context.IsChecked) Dense=true Label=@(context.Description) Class="mx-0" />
+        </MudTd>
+        <MudTd DataLabel="Description" Style="width: 100%">
+            <MudCheckBox @bind-Value=@(context.IsHidden) Dense=true CheckedIcon="@Icons.Material.Filled.VisibilityOff" UncheckedIcon="@Icons.Material.Filled.Visibility" StopClickPropagation=false></MudCheckBox>
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+
+@code {
+    [Parameter] public int index { get; set; } = 0;
+    bool showHidden = false;
+
+    private bool FilterFunc(CheckTask checkTask)
+    {
+        if (showHidden)
+            return true;
+        else
+        {
+            if (checkTask.IsHidden == false)
+                return true;
+        }
+        return false;
+    }
+}
