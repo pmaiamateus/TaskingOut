@@ -15,7 +15,10 @@
         @foreach (var checklist in Index.userData.Checklists)
         {
             <MudCard Class="mb-2">
-                <MudButton FullWidth=true Href=@($"/checklists/{Index.userData.Checklists.IndexOf(checklist)}") Class="justify-space-between">
+                <MudButton FullWidth=true
+                           Href=@($"/checklists/{Index.userData.Checklists.IndexOf(checklist)}")
+                           Class="justify-space-between"
+                           DisableRipple=true>
                     <MudCardContent Class="d-flex flex-column flex-grow-1">
                         <MudStack Row=true Class="justify-space-between align-content-space-between">
                             <MudText>
@@ -25,16 +28,25 @@
                                 @checklist.Checkeds / @checklist.Total
                             </MudText>
                         </MudStack>
-                        @if (!string.IsNullOrEmpty(checklist.Description))
-                        {
-                            <MudText>
-                                @checklist.Description
-                            </MudText>
-                        }
+                        <MudStack Row=true>
+                            @if (!string.IsNullOrEmpty(checklist.Description))
+                            {
+                                <MudText>
+                                    @checklist.Description
+                                </MudText>
+                            }
+                            <MudSpacer />
+                            <MudButton Color=Color.Primary
+                                       Variant=Variant.Filled
+                                       StartIcon="@Icons.Material.Filled.Edit"
+                                       Href=@($"/checklists/edit/{Index.userData.Checklists.IndexOf(checklist)}")>
+                                Edit Checklist
+                            </MudButton>
+                        </MudStack>
                     </MudCardContent>
                 </MudButton>
                 <MudCardActions Class="pa-0 ma-0">
-                    <MudProgressLinear Color="Color.Dark" Size="Size.Small" Value=@checklist.Progress />
+                    <MudProgressLinear Color="Color.Tertiary" Size="Size.Small" Value=@checklist.Progress Rounded=true />
                 </MudCardActions>
             </MudCard>
         }
