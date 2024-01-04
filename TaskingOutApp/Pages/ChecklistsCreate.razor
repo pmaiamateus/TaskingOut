@@ -4,14 +4,18 @@
 @inject NavigationManager NavManager
 
 <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
-    <MudButton Variant="Variant.Filled"
-               Color="Color.Success"
-               OnClick="SaveChecklist">
-        Save checklist
-    </MudButton>
+    <MudStack Row=true Spacing="0">
+        <MudButton StartIcon="@Icons.Material.Filled.ArrowBack" Href="/checklists" Variant="Variant.Outlined">Return</MudButton>
+        <MudSpacer />
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Success"
+                   OnClick="SaveChecklist">
+            Save checklist
+        </MudButton>
+    </MudStack>
     <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors" Class="mb-5" Style="width: 100%">
         <MudTextField @bind-Value=checkList.Title T="string" Label="Title" Required="true" RequiredError="Title is required!" MaxLength="25" />
-        <MudTextField @bind-Value=checkList.Description T ="string" Label="Description" MaxLength="150" />
+        <MudTextField @bind-Value=checkList.Description T="string" Label="Description" MaxLength="150" />
     </MudForm>
     <MudTable Items=@checkList.Checks
               Hover=true
@@ -57,12 +61,15 @@
         <MudText>Creating task</MudText>
     </TitleContent>
     <DialogContent>
-        <MudTextField T="string"
-                      @bind-Value="newCheckTask.Description"
-                      MaxLength=200
-                      AutoGrow=true
-                      Label="Task description"
-                      Immediate=true />
+        <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
+            <MudTextField T="string"
+                          @bind-Value="newCheckTask.Description"
+                          MaxLength=200
+                          AutoGrow=true
+                          Label="Task description"
+                          Immediate=true />
+
+        </MudFocusTrap>
     </DialogContent>
     <DialogActions>
         <MudButton Class="mx-2"
