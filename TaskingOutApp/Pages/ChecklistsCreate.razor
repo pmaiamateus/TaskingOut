@@ -140,13 +140,13 @@
     MudForm form;
     Checklist checkList = new();
     CheckTask newCheckTask = new();
-    private DialogOptions dialogOptions = new() { FullWidth = true };
+    private DialogOptions dialogOptions = new() { FullWidth = true, DisableBackdropClick = true };
 
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
         if (index != null)
-            checkList = Index.userData.Checklists.ElementAt(index.Value);
+            checkList = JsonConvert.DeserializeObject<Checklist>(JsonConvert.SerializeObject(Index.userData.Checklists.ElementAt(index.Value)));
     }
 
     private void OpenCreateDialog() => createVisible = true;
