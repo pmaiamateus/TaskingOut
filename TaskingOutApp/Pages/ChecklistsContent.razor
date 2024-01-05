@@ -7,19 +7,19 @@
         <MudSpacer />
         <MudButton StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Outlined" Color=Color.Success OnClick="SaveChanges">Save changes</MudButton>
     </MudStack>
-    <MudStack Spacing=0 Class="py-2">
-        <MudStack Row=true Spacing="0">
+    <MudStack Class="pt-4 pb-8" Spacing="4">
+        <MudStack Row=true Spacing="1" AlignItems="AlignItems.Center">
             <MudText Typo="Typo.h4">
                 @Index.userData.Checklists.ElementAt(index).Title
             </MudText>
             <MudSpacer />
-            <MudButton StartIcon="@Icons.Material.Filled.Refresh" OnClick="Index.userData.Checklists.ElementAt(index).ResetChecks">Reset</MudButton>
+            <MudButton Variant=Variant.Outlined StartIcon="@Icons.Material.Filled.Refresh" OnClick="Index.userData.Checklists.ElementAt(index).ResetChecks">Reset</MudButton>
             <MudText>
                 @Index.userData.Checklists.ElementAt(index).Checkeds/@Index.userData.Checklists.ElementAt(index).Total (@Index.userData.Checklists.ElementAt(index).Progress%)
             </MudText>
         </MudStack>
-        <MudStack Row=true Spacing="0">
-            <MudText Typo="Typo.h5">
+        <MudStack Row=true Spacing="0" AlignItems="AlignItems.Center">
+            <MudText Typo="Typo.h5" Style="width: calc(100% - 350px); position: absolute;" Class="overflow-x-scroll">
                 @Index.userData.Checklists.ElementAt(index).Description
             </MudText>
             <MudSpacer />

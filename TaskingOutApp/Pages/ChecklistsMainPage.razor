@@ -20,28 +20,33 @@
                            Class="justify-space-between"
                            DisableRipple=true>
                     <MudCardContent Class="d-flex flex-column flex-grow-1">
-                        <MudStack Row=true Class="justify-space-between align-content-space-between">
-                            <MudText>
-                                @checklist.Title
-                            </MudText>
-                            <MudText>
-                                @checklist.Checkeds / @checklist.Total
-                            </MudText>
-                        </MudStack>
-                        <MudStack Row=true>
-                            @if (!string.IsNullOrEmpty(checklist.Description))
-                            {
+                        <MudStack>
+                            <MudStack Row=true Class="justify-space-between align-content-space-between">
                                 <MudText>
-                                    @checklist.Description
+                                    @checklist.Title
                                 </MudText>
-                            }
-                            <MudSpacer />
-                            <MudButton Color=Color.Primary
-                                       Variant=Variant.Filled
-                                       StartIcon="@Icons.Material.Filled.Edit"
-                                       Href=@($"/checklists/edit/{Index.userData.Checklists.IndexOf(checklist)}")>
-                                Edit Checklist
-                            </MudButton>
+                                <MudText>
+                                    @checklist.Checkeds / @checklist.Total
+                                </MudText>
+                            </MudStack>
+                            <MudStack Row=true AlignItems="AlignItems.Center">
+                                @if (!string.IsNullOrEmpty(checklist.Description))
+                                {
+                                    <MudText Style="width: calc(100% - 250px); position: absolute;" Class="overflow-x-scroll">
+                                        @checklist.Description
+                                    </MudText>
+                                }
+                                <MudSpacer />
+                                <MudButton Color=Color.Primary
+                                           Variant=Variant.Filled
+                                           Style="width: 165px"
+                                           StartIcon="@Icons.Material.Filled.Edit"
+                                           Href=@($"/checklists/edit/{Index.userData.Checklists.IndexOf(checklist)}")>
+                                    <MudText Inline=true>
+                                        Edit Checklist
+                                    </MudText>
+                                </MudButton>
+                            </MudStack>
                         </MudStack>
                     </MudCardContent>
                 </MudButton>
